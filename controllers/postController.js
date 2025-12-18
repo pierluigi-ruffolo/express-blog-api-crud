@@ -54,7 +54,7 @@ function modify(req, res) {
 /* DESTROY */
 function destroy(req, res) {
   const id = parseInt(req.params.id);
-  let index;
+  /*  let index;
   arrayPosts.forEach((post, i) => {
     if (post.id === id) {
       index = i;
@@ -70,7 +70,20 @@ function destroy(req, res) {
     arrayPosts.splice(index, 1);
     res.sendStatus(204);
     console.log(arrayPosts);
+  } */
+  const index = arrayPosts.findIndex((post) => post.id === id);
+  console.log(index);
+  if (index === -1) {
+    res.status(404);
+    res.json({
+      error: "not found",
+      message: "Post non trovato",
+    });
+  } else {
+    arrayPosts.splice(index, 1);
+    res.sendStatus(204);
   }
+  console.log(arrayPosts);
 }
 
 const controller = {
