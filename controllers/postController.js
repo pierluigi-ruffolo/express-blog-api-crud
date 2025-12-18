@@ -23,7 +23,15 @@ function index(req, res) {
 /* SHOW */
 function show(req, res) {
   const id = parseInt(req.params.id);
-  const post = arrayPosts.find((post) => id === post.id);
+  let post = arrayPosts.find((post) => id === post.id);
+  if (!post) {
+    res.status(404);
+    post = {
+      error: "Not Found",
+      messagge: "Post non trovato",
+    };
+  }
+
   res.json(post);
 }
 
