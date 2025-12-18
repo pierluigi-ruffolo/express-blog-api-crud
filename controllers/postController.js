@@ -3,7 +3,7 @@ import arrayPosts from "../data/arrayPosts.js";
 /* INDEX */
 function index(req, res) {
   const query = req.query.tags;
-  let response = "";
+  let response = {};
   if (query) {
     const filterPosts = arrayPosts.filter((post) => post.tags.includes(query));
     response = {
