@@ -28,7 +28,7 @@ function show(req, res) {
     res.status(404);
     post = {
       error: "Not Found",
-      messagge: "Post non trovato",
+      message: "Post non trovato",
     };
   }
 
@@ -53,8 +53,24 @@ function modify(req, res) {
 
 /* DESTROY */
 function destroy(req, res) {
-  const id = req.params.id;
-  res.send("Eliminare post " + " " + id);
+  const id = parseInt(req.params.id);
+  let index;
+  arrayPosts.forEach((post, i) => {
+    if (post.id === id) {
+      index = i;
+    }
+  });
+  if (index === undefined) {
+    res.status(404);
+    res.json({
+      error: "Not Found",
+      message: "Post non trovato",
+    });
+  } else {
+    arrayPosts.splice(index, 1);
+    res.sendStatus(204);
+    console.log(arrayPosts);
+  }
 }
 
 const controller = {
