@@ -2,22 +2,20 @@ import arrayPosts from "../data/arrayPosts.js";
 
 /* INDEX */
 function index(req, res) {
-  const query = req.query.tags;
-  let response = {};
-  if (query) {
-    const filterPosts = arrayPosts.filter((post) => post.tags.includes(query));
-    response = {
-      postsLength: filterPosts.length,
-      posts: filterPosts,
-    };
-  } else {
-    response = {
-      postsLength: arrayPosts.length,
-      posts: arrayPosts,
-    };
+  const queryTags = req.query.tags;
+  const queryCategory = req.query.categoria;
+  let response = arrayPosts;
+  if (queryTags) {
+    response = arrayPosts.filter((post) => post.tags.includes(queryTags));
+  }
+  if (queryCategory) {
+    response = response.filter((post) => post.categoria === queryCategory);
   }
 
-  res.json(response);
+  res.json({
+    lengthPosts: response.length,
+    response: response,
+  });
 }
 
 /* SHOW */
