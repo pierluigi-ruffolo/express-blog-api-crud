@@ -37,7 +37,23 @@ function show(req, res) {
 
 /* STORE */
 function store(req, res) {
-  res.send("Aggiungere un post");
+  const dati = req.body;
+  if (dati.titolo === undefined || dati.titolo.length === 0) {
+    res.status(400);
+    return res.json({
+      error: "Il titolo è necessario",
+    });
+  }
+  const newId = arrayPosts[arrayPosts.length - 1].id + 1;
+  const newPost = {
+    id: newId,
+    titolo: dati.titolo,
+    contenuto: dati.contenuto,
+    tags: dati.tags,
+  };
+  arrayPosts.push(newPost);
+  res.status(201);
+  res.json(newPost);
 }
 
 /* UPDATE */
@@ -45,6 +61,7 @@ function update(req, res) {
   const id = req.params.id;
   res.send("cambiare l'intero post " + " " + id);
 }
+
 /* MODIFY */
 function modify(req, res) {
   const id = req.params.id;
@@ -54,25 +71,7 @@ function modify(req, res) {
 /* DESTROY */
 function destroy(req, res) {
   const id = parseInt(req.params.id);
-  /*  let index;
-  arrayPosts.forEach((post, i) => {
-    if (post.id === id) {
-      index = i;
-    }
-  });
-  if (index === undefined) {
-    res.status(404);
-    res.json({
-      error: "Not Found",
-      message: "Post non trovato",
-    });
-  } else {
-    arrayPosts.splice(index, 1);
-    res.sendStatus(204);
-    console.log(arrayPosts);
-  } */
   const index = arrayPosts.findIndex((post) => post.id === id);
-  console.log(index);
   if (index === -1) {
     res.status(404);
     res.json({
@@ -83,7 +82,6 @@ function destroy(req, res) {
     arrayPosts.splice(index, 1);
     res.sendStatus(204);
   }
-  console.log(arrayPosts);
 }
 
 const controller = {
