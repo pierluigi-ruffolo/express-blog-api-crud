@@ -58,8 +58,28 @@ function store(req, res) {
 
 /* UPDATE */
 function update(req, res) {
-  const id = req.params.id;
-  res.send("cambiare l'intero post " + " " + id);
+  const id = parseInt(req.params.id);
+  const dati = req.body;
+  const find = arrayPosts.find((post) => post.id === id);
+  if (find === undefined) {
+    res.status(404);
+    return res.json({
+      error: "NOT FOUND",
+      message: "Post non trovato",
+    });
+  }
+  if (dati.titolo === undefined || dati.titolo.length === 0) {
+    res.status(400);
+    return res.json({
+      error: "Il titolo è necessario",
+    });
+  }
+  find.titolo = dati.titolo;
+  find.contenuto = dati.contenuto;
+  find.tags = dati.tags;
+
+  res.status(200);
+  res.json(find);
 }
 
 /* MODIFY */
